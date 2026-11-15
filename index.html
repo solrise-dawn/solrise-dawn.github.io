@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>作品集官网 · 小程序/网页定制开发</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230E9F8C'/%3E%3Ctext x='16' y='22' font-size='15' font-weight='bold' text-anchor='middle' fill='%23fff' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<style>
+  :root{
+    --ink:#14202E;
+    --body:#43556B;
+    --bg:#F4F7F9;
+    --card:#FFFFFF;
+    --accent:#0E9F8C;
+    --accent-deep:#0B7A6C;
+    --accent-soft:#E3F4F0;
+    --line:#E3E9EF;
+    --hero-ink:#0C1725;
+    --code-bg:#0C1725;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Noto Sans SC',-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+    background:var(--bg);
+    color:var(--body);
+    font-size:15px;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 20px;}
+
+  /* ===== 顶部导航 ===== */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:60px;}
+  .logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink);font-weight:700;font-size:17px;}
+  .logo-mark{width:28px;height:28px;border-radius:7px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:13px;font-weight:700;}
+  .nav-links{display:none;align-items:center;gap:26px;}
+  .nav-links a{text-decoration:none;color:var(--body);font-size:15px;}
+  .nav-links a:hover{color:var(--accent);}
+  .nav-cta{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--accent);color:#fff;text-decoration:none;
+    font-size:15px;font-weight:700;padding:10px 18px;border-radius:10px;
+    min-height:44px;transition:background .2s;
+  }
+  .nav-cta:hover{background:var(--accent-deep);}
+  @media (min-width:768px){
+    .nav-links{display:flex;}
+  }
+
+  /* ===== Hero ===== */
+  .hero{background:var(--hero-ink);color:#EAF1F6;padding:56px 0 64px;}
+  .hero-grid{display:grid;grid-template-columns:1fr;gap:36px;}
+  .hero-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(14,159,140,.16);color:#5FD9C8;border:1px solid rgba(14,159,140,.4);
+    border-radius:999px;padding:6px 14px;font-size:14px;font-weight:500;
+  }
+  .hero-badge .dot{width:8px;height:8px;border-radius:50%;background:#5FD9C8;}
+  .hero h1{font-size:32px;line-height:1.35;color:#fff;font-weight:900;margin:18px 0 14px;}
+  .hero h1 .accent{color:#4ED3C0;}
+  .hero p{font-size:15px;color:#A9B8C6;max-width:520px;}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:15px;font-weight:700;min-height:46px;padding:0 22px;border-radius:10px;
+    text-decoration:none;transition:all .2s;
+  }
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-primary:hover{background:#0DC3AC;}
+  .btn-ghost{background:transparent;color:#EAF1F6;border:1px solid #33475C;}
+  .btn-ghost:hover{border-color:#5FD9C8;color:#5FD9C8;}
+
+  /* 代码窗口 */
+  .code-card{
+    background:var(--code-bg);border:1px solid #22354A;border-radius:14px;
+    overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,.35);
+  }
+  .code-bar{display:flex;align-items:center;gap:6px;padding:12px 14px;border-bottom:1px solid #1F3246;}
+  .code-bar i{width:11px;height:11px;border-radius:50%;display:block;}
+  .code-bar i:nth-child(1){background:#F2716A;}
+  .code-bar i:nth-child(2){background:#E7B84C;}
+  .code-bar i:nth-child(3){background:#6BCB77;}
+  .code-bar span{margin-left:8px;font-size:13px;color:#7C93A8;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  .code-body{padding:16px 18px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.9;color:#C6D4E0;overflow-x:auto;}
+  .code-body .cm{color:#5F7A8E;}
+  .code-body .str{color:#6FD5B6;}
+  .code-body .kw{color:#6DB3F2;}
+  .code-body .num{color:#E7B84C;}
+  @media (min-width:900px){
+    .hero{padding:72px 0 80px;}
+    .hero-grid{grid-template-columns:1.15fr .85fr;align-items:center;gap:56px;}
+    .hero h1{font-size:44px;}
+    .hero p{font-size:16px;}
+  }
+
+  /* ===== 区块通用 ===== */
+  section{padding:56px 0;}
+  .sec-head{margin-bottom:34px;}
+  .sec-head .kicker{font-size:14px;font-weight:700;color:var(--accent);margin-bottom:6px;}
+  .sec-head h2{font-size:26px;font-weight:900;color:var(--ink);line-height:1.4;}
+  .sec-head p{font-size:15px;margin-top:8px;}
+  @media (min-width:768px){
+    section{padding:72px 0;}
+    .sec-head h2{font-size:32px;}
+  }
+
+  /* ===== 服务 ===== */
+  .services{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .svc-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+  .svc-card{
+    background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:26px 22px;
+    transition:transform .2s,border-color .2s;
+  }
+  .svc-card:hover{transform:translateY(-3px);border-color:var(--accent);}
+  .svc-icon{width:46px;height:46px;border-radius:12px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+  .svc-card h3{font-size:19px;font-weight:700;color:var(--ink);}
+  .svc-card .tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px;}
+  .svc-card .tags span{font-size:13px;color:var(--accent-deep);background:#fff;border:1px solid #CFE7E1;border-radius:6px;padding:3px 9px;}
+  .svc-card p{font-size:14px;}
+  .svc-card .price{margin-top:16px;font-size:15px;color:var(--ink);}
+  .svc-card .price b{font-size:22px;color:var(--accent-deep);font-weight:900;}
+  .svc-card .price span{font-size:13px;color:var(--body);}
+  @media (min-width:768px){.svc-grid{grid-template-columns:repeat(3,1fr);}}
+
+  /* ===== 作品 ===== */
+  .works{}
+  .wk-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+  .wk-card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 22px;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .wk-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+  .wk-card h3{font-size:18px;font-weight:700;color:var(--ink);}
+  .badge{font-size:13px;font-weight:500;border-radius:999px;padding:4px 12px;white-space:nowrap;}
+  .badge-live{background:var(--accent-soft);color:var(--accent-deep);border:1px solid #CFE7E1;}
+  .badge-wip{background:#F1F3F6;color:#6B7A8C;border:1px solid var(--line);}
+  .wk-card p{font-size:14px;}
+  .wk-meta{font-size:13px;color:#7C8CA0;border-top:1px dashed var(--line);padding-top:10px;}
+  @media (min-width:768px){.wk-grid{grid-template-columns:repeat(3,1fr);}}
+
+  /* ===== 流程 ===== */
+  .process{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .proc-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+  .proc-step{position:relative;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:24px 22px;}
+  .proc-num{font-size:30px;font-weight:900;color:#C9D6E0;line-height:1;margin-bottom:12px;}
+  .proc-step h3{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+  .proc-step p{font-size:14px;}
+  @media (min-width:640px){.proc-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (min-width:1024px){.proc-grid{grid-template-columns:repeat(4,1fr);}}
+
+  /* ===== 联系 ===== */
+  .contact{padding:64px 0;}
+  .contact-card{
+    background:var(--hero-ink);border-radius:18px;padding:36px 22px;
+    color:#EAF1F6;
+  }
+  .contact-card h2{font-size:26px;font-weight:900;color:#fff;line-height:1.4;}
+  .contact-card .sub{font-size:15px;color:#A9B8C6;margin-top:10px;max-width:520px;}
+  .contact-ways{display:grid;grid-template-columns:1fr;gap:14px;margin-top:28px;}
+  .way{
+    background:rgba(255,255,255,.05);border:1px solid #22354A;border-radius:12px;
+    padding:18px 18px;display:flex;align-items:center;gap:14px;
+  }
+  .way .w-icon{flex:0 0 40px;width:40px;height:40px;border-radius:10px;background:rgba(14,159,140,.18);display:flex;align-items:center;justify-content:center;}
+  .way .w-label{font-size:13px;color:#8FA6B8;}
+  .way .w-value{font-size:16px;font-weight:700;color:#fff;word-break:break-all;}
+  .copy-btn{
+    margin-left:auto;flex:0 0 auto;min-height:44px;padding:0 16px;
+    background:var(--accent);color:#fff;border:none;border-radius:9px;
+    font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;
+  }
+  .copy-btn:hover{background:#0DC3AC;}
+  .way a.w-mail{text-decoration:none;color:inherit;}
+  .way a.w-mail:hover .w-value{color:#5FD9C8;}
+  .contact-tip{font-size:13px;color:#8FA6B8;margin-top:18px;}
+  @media (min-width:768px){
+    .contact{padding:80px 0;}
+    .contact-card{padding:48px 44px;}
+    .contact-card h2{font-size:34px;}
+    .contact-ways{grid-template-columns:repeat(2,1fr);}
+  }
+
+  /* ===== Footer ===== */
+  footer{border-top:1px solid var(--line);padding:26px 0 34px;text-align:center;font-size:13px;color:#8FA0B3;}
+  footer b{color:var(--ink);}
+
+  /* ===== Toast ===== */
+  #toast{
+    position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:#fff;font-size:14px;padding:12px 22px;border-radius:10px;
+    opacity:0;pointer-events:none;transition:all .3s;z-index:99;white-space:nowrap;
+    box-shadow:0 8px 24px rgba(0,0,0,.2);
+  }
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- ===== 顶部导航 ===== -->
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top">
+      <span class="logo-mark">&lt;/&gt;</span>
+      <span>solrise</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#works">作品</a>
+      <a href="#services">服务</a>
+      <a href="#process">流程</a>
+      <a href="#contact">联系</a>
+    </nav>
+    <a class="nav-cta" href="#contact">找我开发</a>
+  </div>
+</header>
+
+<!-- ===== Hero ===== -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="hero-badge"><span class="dot"></span>独立开发者 · 当前可接单</span>
+      <h1>小程序 &amp; 网页<br><span class="accent">定制开发</span></h1>
+      <p>你好，我是solrise。为企业、门店提供小程序、企业官网与 H5 页面的定制开发，从需求沟通到上线维护，一个人全程负责，报价透明，分阶段付款。</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#contact">联系我，免费聊需求</a>
+        <a class="btn btn-ghost" href="#works">看看作品</a>
+      </div>
+    </div>
+    <div class="code-card" aria-hidden="true">
+      <div class="code-bar">
+        <i></i><i></i><i></i>
+        <span>portfolio.js</span>
+      </div>
+      <div class="code-body">
+        <span class="cm">// 你好，我是solrise</span><br>
+        <span class="kw">const</span> 我能做 = [<span class="str">'小程序开发'</span>, <span class="str">'企业官网'</span>, <span class="str">'H5 页面'</span>];<br><br>
+        <span class="kw">async function</span> 接单() {<br>
+        &nbsp;&nbsp;<span class="kw">await</span> 沟通需求(<span class="cm">// 免费</span>);<br>
+        &nbsp;&nbsp;<span class="kw">await</span> 报价签约(<span class="cm">// 预付 40% 开工</span>);<br>
+        &nbsp;&nbsp;<span class="kw">await</span> 开发验收(<span class="cm">// 分阶段交付</span>);<br>
+        &nbsp;&nbsp;<span class="kw">await</span> 交付维护(<span class="cm">// 尾款付清给源码</span>);<br>
+        }<br><br>
+        <span class="cm">// 回复时间：工作日 9:00–22:00</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 服务 ===== -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">SERVICES</div>
+      <h2>我能做什么</h2>
+      <p>三类最常见需求，报价透明、交付明确。以下为起步价，实际按功能量评估。</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0B7A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.4"/><path d="M11 18.6h2"/></svg>
+        </div>
+        <h3>小程序开发</h3>
+        <div class="tags"><span>门店预约</span><span>点餐</span><span>会员</span><span>商城</span></div>
+        <p>餐饮、美业、零售门店最常买的小程序：服务展示、在线预约、下单、会员管理，含上线辅助。</p>
+        <div class="price"><b>¥1500</b><span> 起</span></div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0B7A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="15" rx="2"/><path d="M2.5 8.5h19"/><path d="M6 6.6h.01M9 6.6h.01"/></svg>
+        </div>
+        <h3>企业官网</h3>
+        <div class="tags"><span>公司介绍</span><span>产品展示</span><span>营销官网</span></div>
+        <p>公司/品牌官网与产品展示站，电脑手机自适应，可配后台更新内容，支持 SEO 基础优化。</p>
+        <div class="price"><b>¥800</b><span> 起</span></div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0B7A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 16.5 15 7.5"/><circle cx="6.5" cy="13.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/></svg>
+        </div>
+        <h3>H5 落地页</h3>
+        <div class="tags"><span>活动页</span><span>推广页</span><span>单页应用</span></div>
+        <p>活动宣传、产品推广、简单工具类单页，开发周期短、上线快，适合预算有限快速验证。</p>
+        <div class="price"><b>¥300</b><span> 起</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 作品 ===== -->
+<section class="works" id="works">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">PORTFOLIO</div>
+      <h2>作品展示</h2>
+      <p>以下示例项目会在两周内陆续上线，届时每个案例挂真实演示链接。</p>
+    </div>
+    <div class="wk-grid">
+      <div class="wk-card">
+        <div class="wk-top">
+          <h3>个人作品集官网</h3>
+          <span class="badge badge-live">已上线 · 就是本页</span>
+        </div>
+        <p>展示个人名片、服务报价与全部案例，手机电脑自适应，部署在 GitHub Pages 免费域名上。</p>
+        <div class="wk-meta">Demo 1 · 个人主页 / 名片站</div>
+      </div>
+      <div class="wk-card">
+        <div class="wk-top">
+          <h3>门店预约小程序</h3>
+          <span class="badge badge-wip">建设中 · 即将上线</span>
+        </div>
+        <p>服务列表展示、在线选时段预约、我的预约记录，微信真机可演示，覆盖门店预约类最主流需求。</p>
+        <div class="wk-meta">Demo 2 · 微信小程序</div>
+      </div>
+      <div class="wk-card">
+        <div class="wk-top">
+          <h3>电商展示 H5</h3>
+          <span class="badge badge-wip">建设中 · 即将上线</span>
+        </div>
+        <p>商品列表、详情、购物车与结算下单全流程，纯前端实现，手机浏览器直接访问。</p>
+        <div class="wk-meta">Demo 3 · 商城 H5</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 流程 ===== -->
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">PROCESS</div>
+      <h2>合作流程</h2>
+      <p>四个阶段，每步有明确交付物，钱分三笔付，不用一次性投入。</p>
+    </div>
+    <div class="proc-grid">
+      <div class="proc-step">
+        <div class="proc-num">01</div>
+        <h3>沟通需求</h3>
+        <p>免费沟通，确认页面、功能与预算。列出一份需求清单，双方确认后进入报价。</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">02</div>
+        <h3>报价签约</h3>
+        <p>出报价单与开发合同，预付 40% 后开工。功能清单写进合同，避免后期无限改需求。</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">03</div>
+        <h3>开发验收</h3>
+        <p>分阶段交付，中期验收后付 40%。每阶段你都能看到可运行的效果，改动集中在约定范围内。</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">04</div>
+        <h3>交付维护</h3>
+        <p>尾款付清后交付完整源码与文档，免费维护 1 个月，之后维护按需单独报价。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 联系 ===== -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="contact-card">
+      <h2>有需求？直接联系我</h2>
+      <p class="sub">说一下你想做的项目，我免费帮你评估页面、功能和大概预算，聊完再决定要不要做。</p>
+      <div class="contact-ways">
+        <div class="way">
+          <div class="w-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#6FD5B6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </div>
+          <div>
+            <div class="w-label">微信（优先）</div>
+            <div class="w-value" id="wechat-id">wxid_3aqp6lj5rffq12</div>
+          </div>
+          <button class="copy-btn" id="copy-btn" type="button">复制微信号</button>
+        </div>
+        <div class="way">
+          <div class="w-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#6FD5B6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
+          </div>
+          <div>
+            <div class="w-label">邮箱</div>
+            <a class="w-mail" href="mailto:2397353303@qq.com"><span class="w-value">2397353303@qq.com</span></a>
+          </div>
+        </div>
+      </div>
+      <p class="contact-tip">工作日 9:00–22:00 在线。需求沟通全程免费。</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    © 2026 <b>solrise</b> · 小程序 / 网页定制开发 · 微信：wxid_3aqp6lj5rffq12
+  </div>
+</footer>
+
+<div id="toast" role="status"></div>
+
+<script>
+(function () {
+  'use strict';
+  var toast = document.getElementById('toast');
+  var toastTimer = null;
+
+  function showToast(msg) {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toast.classList.remove('show');
+    }, 2200);
+  }
+
+  // 复制微信号
+  var copyBtn = document.getElementById('copy-btn');
+  var wechatId = document.getElementById('wechat-id');
+  if (copyBtn && wechatId) {
+    copyBtn.addEventListener('click', function () {
+      var text = wechatId.textContent.trim();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          showToast('微信号已复制：' + text);
+        }).catch(function () {
+          showToast('复制失败，请手动添加');
+        });
+      } else {
+        showToast('复制失败，请手动添加');
+      }
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
